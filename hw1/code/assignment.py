@@ -81,7 +81,7 @@ class Model:
         Y = np.eye(self.batch_size)[labels, 0:self.num_classes]
         Z = Y - probabilities
         gradW =  np.dot(inputs.T, Z / self.batch_size)  
-        gradB =  np.sum(Z) / self.batch_size       
+        gradB =  np.sum((Z) / self.batch_size)       
         return gradW, gradB
         pass
     
