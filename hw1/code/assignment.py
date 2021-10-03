@@ -81,7 +81,7 @@ class Model:
         Y = np.eye(self.batch_size)[labels, 0:self.num_classes]
         Z = (Y - probabilities) / self.batch_size
         gradW =  np.dot(inputs.T, Z)  
-        gradB =  self.learning_rate* np.sum(Z)
+        gradB =  np.sum(Z)
              
         return gradW, gradB
         pass
@@ -109,7 +109,7 @@ class Model:
         '''
         # TODO: change the weights and biases of the model to descent the gradient
         self.W += gradW * self.learning_rate
-        self.b += gradB 
+        self.b += gradB * self.learning_rate
         pass
     
 def train(model, train_inputs, train_labels):
