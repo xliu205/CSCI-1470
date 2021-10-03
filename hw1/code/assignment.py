@@ -79,9 +79,10 @@ class Model:
         """
         # TODO: calculate the gradients for the weights and the gradients for the bias with respect to average loss
         Y = np.eye(self.batch_size)[labels, 0:self.num_classes]
-        Z = Y - probabilities
-        gradW =  np.dot(inputs.T, Z / self.batch_size)  
-        gradB =  np.sum((Z) / self.batch_size)       
+        Z = (Y - probabilities) / self.batch_size
+        gradW =  np.dot(inputs.T, Z)  
+        gradB =  np.sum(Z)
+             
         return gradW, gradB
         pass
     
