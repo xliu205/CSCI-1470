@@ -23,5 +23,18 @@ def get_data(inputs_file_path, labels_file_path, num_examples):
 	
 	#TODO: Load inputs and labels
 	#TODO: Normalize inputs
+	with open(inputs_file_path, 'rb') as f, gzip.GzipFile(fileobj=f) as bytestream:
+		bytefile = bytestream.read()
+		inputs = np.frombuffer(bytefile, dtype=np.uint8, count=-1, offset=16)  
+		inputs = inputs.reshape((num_examples, 784))
+
+	with open(labels_file_path, 'rb') as f, gzip.GzipFile(fileobj=f) as bytestream:
+		bytefile = bytestream.read()
+		labels = np.frombuffer(bytefile, dtype=np.uint8, count=-1, offset=8)  
+
+	inputs = inputs / 255.        
+	inputs = inputs.astype(np.float32)  
+
+	return inputs, labels
 
 	
