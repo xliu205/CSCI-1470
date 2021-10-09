@@ -44,8 +44,8 @@ class Model(tf.keras.Model):
         self.pool3_stride = 2
 
         self.flatten_width = 1024
-        self.dense1_output_width = 4
-        self.dense2_output_width = 2
+        self.w_densel1 = 4
+        self.w_densel2 = 2
        
 
         # TODO: Initialize all trainable parameters
@@ -57,13 +57,11 @@ class Model(tf.keras.Model):
         self.stride3 = [1, self.stride_size3, self.stride_size3, 1]
         
 
-        self.w1 = tf.Variable(tf.random.normal([self.flatten_width, self.dense1_output_width], stddev=.1, dtype=tf.float32))
-        self.w2 = tf.Variable(tf.random.normal([self.dense1_output_width, self.dense2_output_width], stddev=.1, dtype=tf.float32))
-        self.w3 = tf.Variable(tf.random.normal([self.dense2_output_width, self.num_classes], stddev=.1, dtype=tf.float32))
-
-
-        self.b1 = tf.Variable(tf.random.normal([1, self.dense1_output_width], stddev=.1, dtype=tf.float32))
-        self.b2 = tf.Variable(tf.random.normal([1, self.dense2_output_width], stddev=.1, dtype=tf.float32))
+        self.w1 = tf.Variable(tf.random.normal([self.flatten_width, self.w_densel1], stddev=.1, dtype=tf.float32))
+        self.w2 = tf.Variable(tf.random.normal([self.w_densel1, self.w_densel2], stddev=.1, dtype=tf.float32))
+        self.w3 = tf.Variable(tf.random.normal([self.w_densel2, self.num_classes], stddev=.1, dtype=tf.float32))
+        self.b1 = tf.Variable(tf.random.normal([1, self.w_densel1], stddev=.1, dtype=tf.float32))
+        self.b2 = tf.Variable(tf.random.normal([1, self.w_densel2], stddev=.1, dtype=tf.float32))
         self.b3 = tf.Variable(tf.random.normal([1, self.num_classes], stddev=.1, dtype=tf.float32))
 		
 

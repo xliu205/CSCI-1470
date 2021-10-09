@@ -58,9 +58,9 @@ def get_data(file_path, first_class, second_class):
 	inputs = (inputs / 255).astype(np.float32)
 
 	labels = labels[indices]
-	labels = (labels == second_class).astype(np.float32)
+	labels = (labels == second_class).astype(int)
 	
-	labels = tf.one_hot(labels, depth=2, dtype=tf.uint8)  
+	labels = tf.one_hot(labels, depth=2, dtype=np.float32)  
 
 
 	return inputs, labels
