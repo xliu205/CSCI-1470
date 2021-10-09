@@ -127,7 +127,7 @@ def valid_test_2():
 
 def main():
 	# TODO: Add in any tests you may want to use to view the differences between your and TensorFlow's output
-	valid_test_1()
+	valid_test_0()
 	return
 
 if __name__ == '__main__':

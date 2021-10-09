@@ -174,9 +174,9 @@ def train(model, train_inputs, train_labels):
             logits = model.call(inputs)
             loss = model.loss(logits, labels)
 
-            if batch % 10 == 0:  # print training accuracy every 10 batches
-                train_acc = model.accuracy(logits, labels)
-                print("Accuracy on training set after {} images: {}".format(model.batch_size * batch, train_acc))
+            if batch % 10 == 0: 
+                train_accuracy = model.accuracy(logits, labels)
+                print("training accuracy after {} images: {}".format(model.batch_size * batch, train_accuracy))
 
         gradients = tape.gradient(loss, model.trainable_variables)
         model.optimizer.apply_gradients(zip(gradients, model.trainable_variables))
