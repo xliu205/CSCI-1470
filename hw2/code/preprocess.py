@@ -3,6 +3,8 @@ import numpy as np
 import tensorflow as tf
 import os
 
+from tensorflow.python.framework.dtypes import DType
+
 def unpickle(file):
 	"""
 	CIFAR data contains the files data_batch_1, data_batch_2, ..., 
@@ -56,8 +58,10 @@ def get_data(file_path, first_class, second_class):
 	inputs = (inputs / 255).astype(np.float32)
 
 	labels = labels[indices]
-	labels = (labels == second_class).astype(int)
+	labels = (labels == second_class).astype(np.float32)
+	
 	labels = tf.one_hot(labels, depth=2, dtype=tf.uint8)  
 
 
 	return inputs, labels
+	
