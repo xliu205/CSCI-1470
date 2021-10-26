@@ -1,6 +1,6 @@
 import tensorflow as tf
 import numpy as np
-from functools import reduce
+
 
 
 def get_data(train_file, test_file):
