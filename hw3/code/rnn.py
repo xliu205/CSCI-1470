@@ -131,9 +131,8 @@ def test(model, test_inputs, test_labels):
         test_input0 = test_inputs[start:end]
         test_label0 = test_labels[start:end]
         probs = model.call(test_input0, None)
-        loss+= model.loss(probs, test_label0)
-        batch_num += 1
-    avg_loss = loss/batch_num
+ 
+    avg_loss = tf.reduce_mean(model.loss_function(probs, test_label0))
     return np.exp(avg_loss)
 
     pass  
