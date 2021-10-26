@@ -131,7 +131,7 @@ def test(model, test_inputs, test_labels):
         test_input = test_inputs[start:end]
         test_label = test_labels[start:end]
         probs = model.call(test_input, None)
-    avg_loss = tf.reduce_mean(model.loss_function(probs, test_labels))
+    avg_loss = tf.reduce_mean(model.loss_function(probs, test_label))
     return np.exp(avg_loss)
 
     pass  
