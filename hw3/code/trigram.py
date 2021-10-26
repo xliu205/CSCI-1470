@@ -19,8 +19,8 @@ class Model(tf.keras.Model):
 
         self.vocab_size = vocab_size
         self.embedding_size = 256 #TODO
-        self.batch_size = 1000 #TODO
-        self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.0005)
+        self.batch_size = 2000 #TODO
+        self.optimizer = tf.keras.optimizers.Adam(learning_rate=5e-4)
 
         # TODO: initialize embeddings and forward pass weights (weights, biases)
         self.E = tf.Variable(tf.random.truncated_normal(shape=[self.vocab_size, self.embedding_size], mean=0, stddev=0.1))
