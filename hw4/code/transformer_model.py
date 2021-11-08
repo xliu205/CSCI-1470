@@ -27,23 +27,23 @@ class Transformer_Seq2Seq(tf.keras.Model):
 		# Define batch size and optimizer/learning rate
 		self.batch_size = 100
 		self.embedding_size = 128
-        self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.003)
+		self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.003)
         
-        self.EE = tf.Variable(
-            tf.random.truncated_normal(shape=[self.english_vocab_size, self.embedding_size], mean=0, stddev=0.01))
-        self.EF = tf.Variable(
-            tf.random.truncated_normal(shape=[self.french_vocab_size, self.embedding_size], mean=0, stddev=0.01))
+		self.EE = tf.Variable(
+			tf.random.truncated_normal(shape=[self.english_vocab_size, self.embedding_size], mean=0, stddev=0.01))
+		self.EF = tf.Variable(
+			tf.random.truncated_normal(shape=[self.french_vocab_size, self.embedding_size], mean=0, stddev=0.01))
 
         # Create positional encoder layers
-        self.position_fre = transformer.Position_Encoding_Layer(french_window_size, self.embedding_size)
-        self.position_eng = transformer.Position_Encoding_Layer(english_window_size, self.embedding_size)
+		self.position_fre = transformer.Position_Encoding_Layer(french_window_size, self.embedding_size)
+		self.position_eng = transformer.Position_Encoding_Layer(english_window_size, self.embedding_size)
 
         # Define encoder and decoder layers:
-        self.encoder = transformer.Transformer_Block(self.embedding_size, is_decoder=False)
-        self.decoder = transformer.Transformer_Block(self.embedding_size, is_decoder=True)
+		self.encoder = transformer.Transformer_Block(self.embedding_size, is_decoder=False)
+		self.decoder = transformer.Transformer_Block(self.embedding_size, is_decoder=True)
 
         # Define dense layer(s)
-        self.dense = tf.keras.layers.Dense(self.english_vocab_size, activation='softmax')
+		self.dense = tf.keras.layers.Dense(self.english_vocab_size, activation='softmax')
 
 	@tf.function
 	def call(self, encoder_input, decoder_input):
@@ -54,21 +54,21 @@ class Transformer_Seq2Seq(tf.keras.Model):
 		"""
         # TODO:
         # 1) Add the positional embeddings to french sentence embeddings
-        fre_embed = self.position_fre.call(tf.nn.embedding_lookup(self.EF, encoder_input))
+		fre_embed = self.position_fre.call(tf.nn.embedding_lookup(self.EF, encoder_input))
 
         # 2) Pass the french sentence embeddings to the encoder
-        encoder_out = self.encoder(fre_embed)
+		encoder_out = self.encoder(fre_embed)
 
         # 3) Add positional embeddings to the english sentence embeddings
-        eng_embed = self.position_eng.call(tf.nn.embedding_lookup(self.EE, decoder_input))
+		eng_embed = self.position_eng.call(tf.nn.embedding_lookup(self.EE, decoder_input))
 
         # 4) Pass the english embeddings and output of your encoder, to the decoder
-        decoder_out = self.decoder(eng_embed, encoder_out)
+		decoder_out = self.decoder(eng_embed, encoder_out)
 
         # 3) Apply dense layer(s) to the decoder out to generate probabilities
-        prbs = self.dense(decoder_out)
+		prbs = self.dense(decoder_out)
     
-        return prbs
+		return prbs
 	
 		
 

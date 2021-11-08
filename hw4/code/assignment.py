@@ -29,26 +29,26 @@ def train(model, train_french, train_english, eng_padding_index):
 	# 
 	# - When computing loss, the decoder labels should have the first word removed:
 	#	 [STOP CS147 is the best class. STOP] --> [CS147 is the best class. STOP]
-    print('Train starts: \n')
-    N = train_french.shape[0] // model.batch_size
-    for batch in range(N):
-        start = batch * model.batch_size
-        end = (batch + 1) * model.batch_size
-        if (batch + 1) * model.batch_size > train_french.shape[0]:
-            end = train_french.shape[0]
-        encoder_input = train_french[start: end, :]
-        decoder_input = train_english[start: end, 0: ENGLISH_WINDOW_SIZE]
-        decoder_label = train_english[start: end, 1: ENGLISH_WINDOW_SIZE + 1]
-        mask = (decoder_label != eng_padding_index)
+	print('Train starts: \n')
+	N = train_french.shape[0] // model.batch_size
+	for batch in range(N):
+		start = batch * model.batch_size
+		end = (batch + 1) * model.batch_size
+ 		if (batch + 1) * model.batch_size > train_french.shape[0]:
+			end = train_french.shape[0]
+		encoder_input = train_french[start: end, :]
+ 		decoder_input = train_english[start: end, 0: ENGLISH_WINDOW_SIZE]
+ 		decoder_label = train_english[start: end, 1: ENGLISH_WINDOW_SIZE + 1]
+		mask = (decoder_label != eng_padding_index)
 
-        with tf.GradientTape() as tape:
-            prbs = model.call(encoder_input, decoder_input)
-            loss = model.loss_function(prbs, decoder_label, mask)
+		with tf.GradientTape() as tape:
+			prbs = model.call(encoder_input, decoder_input)
+			loss = model.loss_function(prbs, decoder_label, mask)
 
-        gradients = tape.gradient(loss, model.trainable_variables)
-        model.optimizer.apply_gradients(zip(gradients, model.trainable_variables))
+		gradients = tape.gradient(loss, model.trainable_variables)
+		model.optimizer.apply_gradients(zip(gradients, model.trainable_variables))
 
-        print('\r', 'training process: {0:.2f} %'.format((batch + 1) * 100 / N), end='')
+		print('\r', 'training process: {0:.2f} %'.format((batch + 1) * 100 / N), end='')
 
 	pass
 
@@ -66,34 +66,34 @@ def test(model, test_french, test_english, eng_padding_index):
 	"""
 
 	# Note: Follow the same procedure as in train() to construct batches of data!
-    print('\nTest starts:')
-    N = test_french.shape[0] // model.batch_size
-    sum_loss = 0
-    sum_true = 0
-    sum_symbol = 0
-    for batch in range(N):
-        start = batch * model.batch_size
-        end = (batch + 1) * model.batch_size
-        if (batch + 1) * model.batch_size > test_french.shape[0]:
-            end = test_french.shape[0]
-        encoder_input = test_french[start: end, :]
-        decoder_input = test_english[start: end, 0: ENGLISH_WINDOW_SIZE]
-        decoder_label = test_english[start: end, 1: ENGLISH_WINDOW_SIZE + 1]
-        mask = (decoder_label != eng_padding_index)
+	print('\nTest starts:')
+	N = test_french.shape[0] // model.batch_size
+	sum_loss = 0
+	sum_true = 0
+	sum_symbol = 0
+	for batch in range(N):
+		start = batch * model.batch_size
+		end = (batch + 1) * model.batch_size
+		if (batch + 1) * model.batch_size > test_french.shape[0]:
+			end = test_french.shape[0]
+		ncoder_input = test_french[start: end, :]
+ 		decoder_input = test_english[start: end, 0: ENGLISH_WINDOW_SIZE]
+		decoder_label = test_english[start: end, 1: ENGLISH_WINDOW_SIZE + 1]
+		mask = (decoder_label != eng_padding_index)
 
-        prbs = model.call(encoder_input, decoder_input)
-        loss = tf.reduce_mean(model.loss_function(prbs, decoder_label, mask)) * (end - start)
-        sum_loss += loss
-        batch_acc = model.accuracy_function(prbs, decoder_label, mask)
-        batch_symbol = np.sum(tf.cast(mask, dtype=tf.float32))
-        sum_symbol += batch_symbol
-        sum_true += batch_acc * batch_symbol
-        print('\r', 'testing process: {0:.2f} %'.format((batch + 1) * 100 / N), end='')
+		prbs = model.call(encoder_input, decoder_input)
+		loss = tf.reduce_mean(model.loss_function(prbs, decoder_label, mask)) * (end - start)
+		sum_loss += loss
+		batch_acc = model.accuracy_function(prbs, decoder_label, mask)
+		batch_symbol = np.sum(tf.cast(mask, dtype=tf.float32))
+		sum_symbol += batch_symbol
+		sum_true += batch_acc * batch_symbol
+		print('\r', 'testing process: {0:.2f} %'.format((batch + 1) * 100 / N), end='')
 
-    perplexity = np.exp(sum_loss / test_english.shape[0])
-    accuracy = sum_true / sum_symbol
+	perplexity = np.exp(sum_loss / test_english.shape[0])
+	accuracy = sum_true / sum_symbol
 
-    return perplexity, accuracy
+	return perplexity, accuracy
 
 	
 	pass
@@ -122,11 +122,11 @@ def main():
 	
 	# TODO:
 	# Train and Test Model for 1 epoch.
-    train(model, train_french, train_english, eng_padding_index)
+	train(model, train_french, train_english, eng_padding_index)
 
-    perplexity, accuracy = test(model, test_french, test_english, eng_padding_index)
-    print('\n\nPerplexity = {0:.2f}'.format(perplexity))
-    print('Accuracy = {0:.4f}'.format(accuracy))
+	perplexity, accuracy = test(model, test_french, test_english, eng_padding_index)
+	print('\n\nPerplexity = {0:.2f}'.format(perplexity))
+	print('Accuracy = {0:.4f}'.format(accuracy))
 
 
 

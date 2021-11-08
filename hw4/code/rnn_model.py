@@ -19,17 +19,17 @@ class RNN_Seq2Seq(tf.keras.Model):
 		# Define batch size and optimizer/learning rate
 		self.batch_size = 100 # You can change this
 		self.embedding_size = 64 # You should change this
-        self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.01)
-        self.rnn_size = 80
+		self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.01)
+		self.rnn_size = 80
 		# 2) Define embeddings, encoder, decoder, and feed forward layers
-        self.EE = tf.Variable(
-            tf.random.truncated_normal(shape=[self.english_vocab_size, self.embedding_size], mean=0, stddev=0.01))
-        self.EF = tf.Variable(
-            tf.random.truncated_normal(shape=[self.french_vocab_size, self.embedding_size], mean=0, stddev=0.01))
+		self.EE = tf.Variable(
+			tf.random.truncated_normal(shape=[self.english_vocab_size, self.embedding_size], mean=0, stddev=0.01))
+		self.EF = tf.Variable(
+			tf.random.truncated_normal(shape=[self.french_vocab_size, self.embedding_size], mean=0, stddev=0.01))
 
-        self.encoder = tf.keras.layers.LSTM(self.rnn_size, return_sequences=True, return_state=True)
-        self.decoder = tf.keras.layers.LSTM(self.rnn_size, return_sequences=True, return_state=True)
-        self.dense = tf.keras.layers.Dense(self.english_vocab_size, activation='softmax')
+		self.encoder = tf.keras.layers.LSTM(self.rnn_size, return_sequences=True, return_state=True)
+		self.decoder = tf.keras.layers.LSTM(self.rnn_size, return_sequences=True, return_state=True)
+		self.dense = tf.keras.layers.Dense(self.english_vocab_size, activation='softmax')
 
 
 	@tf.function
@@ -42,16 +42,16 @@ class RNN_Seq2Seq(tf.keras.Model):
 	
 		# TODO:
         # 1) Pass your french sentence embeddings to your encoder
-        fre_embed = tf.nn.embedding_lookup(self.EF, encoder_input)
-        encoder_out, state1, state2 = self.encoder(fre_embed, initial_state=None)
+		fre_embed = tf.nn.embedding_lookup(self.EF, encoder_input)
+		encoder_out, state1, state2 = self.encoder(fre_embed, initial_state=None)
 
         # 2) Pass your english sentence embeddings, and final state of your encoder, to your decoder
-        eng_embed = tf.nn.embedding_lookup(self.EE, decoder_input)
-        decoder_out, state3, state4 = self.decoder(eng_embed, initial_state=(state1, state2))
+		eng_embed = tf.nn.embedding_lookup(self.EE, decoder_input)
+		decoder_out, state3, state4 = self.decoder(eng_embed, initial_state=(state1, state2))
 
         # 3) Apply dense layer(s) to the decoder out to generate probabilities
-        prbs = self.dense(decoder_out)
-        return prbs
+		prbs = self.dense(decoder_out)
+		return prbs
 
 
 	def accuracy_function(self, prbs, labels, mask):

@@ -25,11 +25,11 @@ def Attention_Matrix(K, Q, use_mask=False):
 	# TODO:
 	# 1) compute attention weights using queries and key matrices (if use_mask==True, then make sure to add the attention mask before softmax)
 	# 2) return the attention matrix
-    atten_weights = tf.matmul(Q, tf.transpose(K, [0, 2, 1])) / np.sqrt(K.shape[2])
-    if use_mask:
-        atten_weights += atten_mask
-    atten_weights = tf.nn.softmax(atten_weights)
-    attention = tf.matmul(atten_weights, V)
+	atten_weights = tf.matmul(Q, tf.transpose(K, [0, 2, 1])) / np.sqrt(K.shape[2])
+	if use_mask:
+		atten_weights += atten_mask
+	atten_weights = tf.nn.softmax(atten_weights)
+	attention = tf.matmul(atten_weights, V)
 
 
 	# Check lecture slides for how to compute self-attention
@@ -56,9 +56,9 @@ class Atten_Head(tf.keras.layers.Layer):
 		# Initialize the weight matrices for K, V, and Q.
 		# They should be able to multiply an input_size vector to produce an output_size vector 
 		# Hint: use self.add_weight(...)
-        self.wq = self.add_weight(shape=[input_size, output_size], trainable=True)
-        self.wk = self.add_weight(shape=[input_size, output_size], trainable=True)
-        self.wv = self.add_weight(shape=[input_size, output_size], trainable=True)
+		self.wq = self.add_weight(shape=[input_size, output_size], trainable=True)
+		self.wk = self.add_weight(shape=[input_size, output_size], trainable=True)
+		self.wv = self.add_weight(shape=[input_size, output_size], trainable=True)
 		
 	@tf.function
 	def call(self, inputs_for_keys, inputs_for_values, inputs_for_queries):
@@ -78,12 +78,12 @@ class Atten_Head(tf.keras.layers.Layer):
 		# - Apply 3 matrices to turn inputs into keys, values, and queries. You will need to use tf.tensordot for this. 
 		# - Call Attention_Matrix with the keys and queries, and with self.use_mask.
 		# - Apply the attention matrix to the values
-        K = tf.tensordot(inputs_for_keys, self.wk, axes=[[2], [0]])
-        V = tf.tensordot(inputs_for_values, self.wv, axes=[[2], [0]])
-        Q = tf.tensordot(inputs_for_queries, self.wq, axes=[[2], [0]])
-        attention = Self_Attention(K, V, Q, self.use_mask)
+		K = tf.tensordot(inputs_for_keys, self.wk, axes=[[2], [0]])
+		V = tf.tensordot(inputs_for_values, self.wv, axes=[[2], [0]])
+		Q = tf.tensordot(inputs_for_queries, self.wq, axes=[[2], [0]])
+		attention = Self_Attention(K, V, Q, self.use_mask)
 
-        return attention
+		return attention
 
 
 
