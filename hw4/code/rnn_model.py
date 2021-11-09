@@ -19,7 +19,7 @@ class RNN_Seq2Seq(tf.keras.Model):
 		# Define batch size and optimizer/learning rate
 		self.batch_size = 100 # You can change this
 		self.embedding_size = 64 # You should change this
-		self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.01)
+		self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.03)
 		self.rnn_size = 80
 		# 2) Define embeddings, encoder, decoder, and feed forward layers
 		self.EE = tf.Variable(
