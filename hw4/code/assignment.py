@@ -1,7 +1,6 @@
 import os
 import numpy as np
 import tensorflow as tf
-import numpy as np
 from preprocess import *
 from transformer_model import Transformer_Seq2Seq
 from rnn_model import RNN_Seq2Seq
@@ -76,7 +75,7 @@ def test(model, test_french, test_english, eng_padding_index):
 		end = (batch + 1) * model.batch_size
 		if (batch + 1) * model.batch_size > test_french.shape[0]:
 			end = test_french.shape[0]
-		ncoder_input = test_french[start: end, :]
+		encoder_input = test_french[start: end, :]
 		decoder_input = test_english[start: end, 0: ENGLISH_WINDOW_SIZE]
 		decoder_label = test_english[start: end, 1: ENGLISH_WINDOW_SIZE + 1]
 		mask = (decoder_label != eng_padding_index)
@@ -110,9 +109,9 @@ def main():
 	if sys.argv[1] == "TRANSFORMER":
 		av.setup_visualization(enable=False)
 
-	print("Running preprocessing...")
+	
 	train_english, test_english, train_french, test_french, english_vocab, french_vocab, eng_padding_index = get_data('../../data/fls.txt','../../data/els.txt','../../data/flt.txt','../../data/elt.txt')
-	print("Preprocessing complete.")
+	
 
 	model_args = (FRENCH_WINDOW_SIZE, len(french_vocab), ENGLISH_WINDOW_SIZE, len(english_vocab))
 	if sys.argv[1] == "RNN":

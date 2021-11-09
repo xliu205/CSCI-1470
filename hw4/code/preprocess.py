@@ -46,11 +46,11 @@ def build_vocab(sentences):
 	"""
 	DO NOT CHANGE
 
-  Builds vocab from list of sentences
+	Builds vocab from list of sentences
 
 	:param sentences:  list of sentences, each a list of words
 	:return: tuple of (dictionary: word --> unique index, pad_token_idx)
-  """
+	"""
 	tokens = []
 	for s in sentences: tokens.extend(s)
 	all_words = sorted(list(set([STOP_TOKEN,PAD_TOKEN,UNK_TOKEN] + tokens)))
@@ -63,7 +63,7 @@ def convert_to_id(vocab, sentences):
 	"""
 	DO NOT CHANGE
 
-  Convert sentences to indexed 
+	Convert sentences to indexed 
 
 	:param vocab:  dictionary, word --> unique index
 	:param sentences:  list of lists of words, each representing padded sentence
@@ -112,8 +112,11 @@ def get_data(french_training_file, english_training_file, french_test_file, engl
 	
 	#1) Read English and French Data for training and testing (see read_data)
 	french_trainset = read_data(french_training_file)
-	english_trainset = read_data(english_training_file)
+
 	french_testset = read_data(french_test_file)
+
+	english_trainset = read_data(english_training_file)
+	
 	english_testset = read_data(english_test_file)
     # 2) Pad training data (see pad_corpus)
 	french_padded_train, english_padded_train = pad_corpus(french_trainset, english_trainset)

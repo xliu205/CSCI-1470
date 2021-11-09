@@ -17,7 +17,7 @@ class RNN_Seq2Seq(tf.keras.Model):
 		# 1) Define any hyperparameters
 
 		# Define batch size and optimizer/learning rate
-		self.batch_size = 100 # You can change this
+		self.batch_size = 200 # You can change this
 		self.embedding_size = 64 # You should change this
 		self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.03)
 		self.rnn_size = 80
