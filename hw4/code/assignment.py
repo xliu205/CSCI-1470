@@ -87,7 +87,7 @@ def test(model, test_french, test_english, eng_padding_index):
 		batch_symbol = np.sum(tf.cast(mask, dtype=tf.float32))
 		sum_symbol += batch_symbol
 		sum_true += batch_acc * batch_symbol
-		print('\r', 'test {0:.2f} %'.format((batch + 1) * 100 / N), end='')
+		
 
 	perplexity = np.exp(sum_loss / test_english.shape[0])
 	accuracy = sum_true / sum_symbol
@@ -107,7 +107,7 @@ def main():
 	# You should turn this on once you feel your code is working.
 	# Note that it is designed to work with transformers that have single attention heads.
 	if sys.argv[1] == "TRANSFORMER":
-		av.setup_visualization(enable=False)
+		av.setup_visualization(enable=True)
 
 	
 	train_english, test_english, train_french, test_french, english_vocab, french_vocab, eng_padding_index = get_data('../../data/fls.txt','../../data/els.txt','../../data/flt.txt','../../data/elt.txt')
@@ -124,7 +124,7 @@ def main():
 	train(model, train_french, train_english, eng_padding_index)
 
 	perplexity, accuracy = test(model, test_french, test_english, eng_padding_index)
-	print('\n\nPerplexity : {0:.2f}'.format(perplexity))
+	print('\n\n Perplexity : {0:.2f}'.format(perplexity))
 	print('Accuracy : {0:.4f}'.format(accuracy))
 
 
