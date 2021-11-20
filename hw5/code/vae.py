@@ -140,7 +140,7 @@ def reparametrize(mu, logvar):
     """
     N, Z = mu.shape
     var = exp(logvar)
-    epsilon = tf.random.normal((N,Z),dtype= mu.shape)
+    epsilon = tf.random.normal((N,Z),dtype= mu.dtype)
     z = sqrt(var)* epsilon + mu
 
     ################################################################################################
