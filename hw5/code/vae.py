@@ -47,12 +47,13 @@ class VAE(tf.keras.Model):
         - mu: Matrix representing estimated posterior mu (N, Z), with Z latent space dimension
         - logvar: Matrix representing estimataed variance in log-space (N, Z), with Z latent space dimension
         """
+        x_shape = x.shape
+        x = tf.keras.layers.Flatten()(x)
         encoder = self.encoder(x)
         mu = self.mu_layer(encoder)
         logvar = self.logvar_layer(encoder)
         z = reparametrize(mu, logvar)
-        decoder = self.decoder(z)
-        x_hat = decoder
+        x_hat = tf.reshape(self.decoder(z),x_shape)
       
 
         return x_hat, mu, logvar
