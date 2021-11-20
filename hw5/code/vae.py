@@ -53,8 +53,9 @@ class VAE(tf.keras.Model):
         z = reparametrize(mu, logvar)
         decoder = self.decoder(z)
         x_hat = decoder
+      
 
-        return x_hat, mu, log_var
+        return x_hat, mu, logvar
 
 
 class CVAE(tf.keras.Model):
@@ -110,10 +111,8 @@ class CVAE(tf.keras.Model):
         logvar = self.logvar_layer(encoder)
         z = reparametrize(mu, logvar)
         z = tf.concat9([z,c],1)
-        decoder = self.decoder(z)
         x_hat = tf.reshape(self.decoder(z),x_shape)
-        return x_hat, mu, log_var
-
+        return x_hat, mu,logvar
 
 def reparametrize(mu, logvar):
     """
