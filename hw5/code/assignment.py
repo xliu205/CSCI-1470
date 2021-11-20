@@ -30,10 +30,10 @@ def one_hot(labels, class_size):
     Inputs:
     - labels: Labels Tensor of shape (N,) representing a ground-truth label
     for each MNIST image
-    - class_size: Scalar representing of target classes our dataset 
+    - class_size: Scalar representing of target classes our dataset
     Returns:
-    - targets: One-hot label matrix of (N, C), where targets[i, j] = 1 when 
-    the ground truth label for image i is j, and targets[i, :j] & 
+    - targets: One-hot label matrix of (N, C), where targets[i, j] = 1 when
+    the ground truth label for image i is j, and targets[i, :j] &
     targets[i, j + 1:] are equal to 0
     """
     targets = np.zeros((labels.shape[0], class_size))
@@ -42,6 +42,7 @@ def one_hot(labels, class_size):
     targets = tf.convert_to_tensor(targets)
     targets = tf.cast(targets, tf.float32)
     return targets
+
 
 def train_vae(model, train_loader, args, is_cvae=False):
     """
@@ -253,7 +254,7 @@ def load_weights(model):
 
     Inputs:
     - model: Your untrained model instance.
-    
+
     Returns:
     - model: Trained model.
     """
@@ -272,6 +273,7 @@ def load_weights(model):
     return model
 
 def main(args):
+
     # Load MNIST dataset
     train_dataset = load_mnist(args.batch_size)
 
@@ -282,8 +284,8 @@ def main(args):
         model = VAE(args.input_size, latent_size=args.latent_size)
 
     # Load trained weights
-    #if args.load_weights:
-    #    model = load_weights(model)
+    if args.load_weights:
+       model = load_weights(model)
 
     # Train VAE
     for epoch_id in range(args.num_epochs):
@@ -300,6 +302,10 @@ def main(args):
     # Optional: Save VAE/CVAE model for debugging/testing.
     save_model_weights(model, args)
 
+
 if __name__ == "__main__":
     args = parseArguments()
     main(args)
+
+
+
