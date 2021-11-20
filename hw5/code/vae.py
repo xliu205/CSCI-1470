@@ -14,7 +14,8 @@ class VAE(tf.keras.Model):
 
         self.encoder = tf.keras.Sequential(
             [
-                tf.keras.layers.Dense(self.hidden_dim, input_shape=(128, self.input_size), activation="relu"),
+                tf.keras.layers.Flatten(),
+                tf.keras.layers.Dense(self.hidden_dim, activation="relu"),
                 tf.keras.layers.Dense(self.hidden_dim, activation="relu"),
                 tf.keras.layers.Dense(self.hidden_dim, activation="relu"),
             ]
@@ -48,13 +49,12 @@ class VAE(tf.keras.Model):
         - logvar: Matrix representing estimataed variance in log-space (N, Z), with Z latent space dimension
         """
         x_shape = x.shape
-        x = tf.keras.layers.Flatten()(x)
         encoder = self.encoder(x)
         mu = self.mu_layer(encoder)
         logvar = self.logvar_layer(encoder)
         z = reparametrize(mu, logvar)
-        x_hat = tf.reshape(self.decoder(z),x_shape)
-      
+        decoder = self.decoder(z)
+        x_hat = tf.reshape(decoder, x_shape)
 
         return x_hat, mu, logvar
 
@@ -69,7 +69,7 @@ class CVAE(tf.keras.Model):
         self.hidden_dim = 400
         self.encoder = tf.keras.Sequential(
             [
-                tf.keras.layers.Dense(self.hidden_dim, input_shape=(128, self.input_size + self.num_classes), activation="relu"),
+                tf.keras.layers.Dense(self.hidden_dim, activation="relu"),
                 tf.keras.layers.Dense(self.hidden_dim, activation="relu"),
                 tf.keras.layers.Dense(self.hidden_dim, activation="relu"),
             ]
@@ -111,9 +111,10 @@ class CVAE(tf.keras.Model):
         mu = self.mu_layer(encoder)
         logvar = self.logvar_layer(encoder)
         z = reparametrize(mu, logvar)
-        z = tf.concat9([z,c],1)
+        z = tf.concat([z,c],1)
         x_hat = tf.reshape(self.decoder(z),x_shape)
-        return x_hat, mu,logvar
+        return x_hat, mu, logvar
+
 
 def reparametrize(mu, logvar):
     """
